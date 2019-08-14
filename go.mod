@@ -1,4 +1,4 @@
-module gitlab.com/mikrowezel/backend/log
+module gitlab.com/mikrowezel/log
 
 go 1.12
 
