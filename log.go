@@ -94,34 +94,34 @@ func FromCtx(ctx context.Context) (log *Logger, fresh bool) {
 }
 
 // Debug logs debug messages.
-func (l *Logger) Debug(meta ...interface{}) {
+func (l Logger) Debug(meta ...interface{}) {
 	if len(meta) > 0 {
 		l.debugf(stringify(meta[0]), meta[1:len(meta)])
 	}
 }
 
 // Info logs info messages.
-func (l *Logger) Info(meta ...interface{}) {
+func (l Logger) Info(meta ...interface{}) {
 	if len(meta) > 0 {
 		l.infof(stringify(meta[0]), meta[1:len(meta)])
 	}
 }
 
 // Warn logs warning messages.
-func (l *Logger) Warn(meta ...interface{}) {
+func (l Logger) Warn(meta ...interface{}) {
 	if len(meta) > 0 {
 		l.warnf(stringify(meta[0]), meta[1:len(meta)])
 	}
 }
 
 // Error logs error messages.
-func (l *Logger) Error(err error, meta ...interface{}) {
+func (l Logger) Error(err error, meta ...interface{}) {
 	if len(meta) > 0 {
 		l.errorf(err, stringify(meta[0]), meta[1:len(meta)])
 	}
 }
 
-func (l *Logger) debugf(message string, fields []interface{}) {
+func (l Logger) debugf(message string, fields []interface{}) {
 	if l.Level > Debug {
 		return
 	}
@@ -130,7 +130,7 @@ func (l *Logger) debugf(message string, fields []interface{}) {
 	le.Msg(message)
 }
 
-func (l *Logger) infof(message string, fields []interface{}) {
+func (l Logger) infof(message string, fields []interface{}) {
 	if l.Level > Info {
 		return
 	}
@@ -139,7 +139,7 @@ func (l *Logger) infof(message string, fields []interface{}) {
 	le.Msg(message)
 }
 
-func (l *Logger) warnf(message string, fields []interface{}) {
+func (l Logger) warnf(message string, fields []interface{}) {
 	if l.Level > Warn {
 		return
 	}
@@ -148,7 +148,7 @@ func (l *Logger) warnf(message string, fields []interface{}) {
 	le.Msg(message)
 }
 
-func (l *Logger) errorf(err error, message string, fields []interface{}) {
+func (l Logger) errorf(err error, message string, fields []interface{}) {
 	le := l.ErrLog.Info()
 	appendKeyValues(le, l.dynafields, fields)
 	le.Err(err)
@@ -218,7 +218,7 @@ func stringify(val interface{}) string {
 }
 
 // UpdateLogLevel updates log level.
-func (l *Logger) UpdateLogLevel(level int) {
+func (l Logger) UpdateLogLevel(level int) {
 	// Allow info level to log the update
 	// But don't downgrade to it if Error is set.
 	current := Error
