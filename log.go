@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 var (
@@ -40,6 +41,37 @@ func NewLogger(level int, name string, stfields ...interface{}) *Logger {
 
 	stdl := zerolog.New(os.Stdout).With().Timestamp().Logger()
 	errl := zerolog.New(os.Stderr).With().Timestamp().Logger()
+
+	setLogLevel(&stdl, level)
+	setLogLevel(&errl, level)
+
+	l := &Logger{
+		Level:  level,
+		StdLog: stdl,
+		ErrLog: errl,
+	}
+
+	if len(stfields) > 1 && !cfg.configured {
+		setup(name, stfields)
+		Default = l
+	}
+
+	return l
+}
+
+// NewDevLogger logger.
+// Pretty logging for development mode.
+// Not recommended for production use.
+// If static fields are provided those values will define
+// the default static fields for each new built instance
+// if they were not yet configured.
+func NewDevLogger(level int, name string, stfields ...interface{}) *Logger {
+	if level < Disabled || level > Error {
+		level = Info
+	}
+
+	stdl := log.Output(zerolog.ConsoleWriter{Out: os.Stdout})
+	errl := log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 
 	setLogLevel(&stdl, level)
 	setLogLevel(&errl, level)
