@@ -33,7 +33,7 @@ l := log.NewLogger(level, name, "revision", rev)
 Level could be values from 0 to 3 or for better readability:
 `log.Debug`, `log.Info`, `log.Warn`, `log.Error`.
 
-If name is not empty it will be appended to the logger normal output (i.e.: `"name": "my-service`)
+If name is not empty it will be appended to the logger normal output (i.e.: `"name": "my-service"`)
 
 Additional pair of values will be appended to the logger normal output (i.e.: `"revision": "5844c5a725"`)
 
