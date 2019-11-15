@@ -150,7 +150,9 @@ func (l Logger) Warn(meta ...interface{}) {
 func (l Logger) Error(err error, meta ...interface{}) {
 	if len(meta) > 0 {
 		l.errorf(err, stringify(meta[0]), meta[1:len(meta)])
+		return
 	}
+	l.errorf(err, "", nil)
 }
 
 func (l Logger) debugf(message string, fields []interface{}) {
@@ -181,7 +183,7 @@ func (l Logger) warnf(message string, fields []interface{}) {
 }
 
 func (l Logger) errorf(err error, message string, fields []interface{}) {
-	le := l.ErrLog.Info()
+	le := l.ErrLog.Error()
 	appendKeyValues(le, l.dynafields, fields)
 	le.Err(err)
 	le.Msg(message)
